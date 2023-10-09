@@ -17,6 +17,7 @@ const secret = process.env.SECRET
 
 const app = express()
 app.use(express.static("public"))
+app.set("view engine", "ejs")
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(session({
@@ -144,6 +145,27 @@ app.get("/logout", (req, res) => {
         req.session.destroy()
         res.redirect("/")
     })
+
+})
+
+
+app.post("/addTask", (req,res) => {
+
+
+        const task = {
+            description: req.body.description,
+            when: req.body.when
+        }
+
+        User.findByIdAndUpdate(req.session.userId, {$push: {tasks: task}}) 
+            .then((user) => {
+                console.log(user.tasks)
+            })
+
+        res.send("You are not logged in")
+
+
+    
 
 })
 
