@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     phoneNum: Number,
     tasks: [{
         description: String,
-        when: Number
+        when: Date,
     }]
 })
 

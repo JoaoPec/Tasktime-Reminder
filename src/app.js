@@ -6,6 +6,12 @@ import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import session from "express-session"
 import dotenv from "dotenv"
+import initializeTwilioClient from "./twilioClient.js"
+import checkScheduledTasks from "./taskScheduler.js"
+
+//twilio
+
+const client = initializeTwilioClient()
 
 //dotenv
 
@@ -30,21 +36,28 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+
 //connectDB
+
 dbConnect()
+
+setInterval(checkScheduledTasks, 60000);
 
 //get routes
 
-app.get("/", async (req, res) => {
 
-    const user = await User.findById(req.session.userId)
 
-    if (user){
-        
-        res.send("Hello " + user.name)
-        console.log(req.session.userId)
+app.get("/",async (req, res) => {
+    if (req.isAuthenticated()) {
+       
+        const user = User.findById(req.session.userId)
+
+        if(user.tasks.length > 0){
+
+                    }
 
     }
+
 })
 
 
@@ -55,7 +68,7 @@ app.get("/", async (req, res) => {
 
 app.post("/register", (req, res) => {
 
-    User.findOne({ username: req.body.username})
+    User.findOne({ username: req.body.username })
         .then((user) => {
             if (user) {
                 res.send("User already exists");
@@ -80,7 +93,7 @@ app.post("/register", (req, res) => {
                             req.session.userId = user._id.toString();
 
                             console.log(req.session.userId)
-                            
+
                             res.redirect("/")
 
                         })
@@ -97,19 +110,19 @@ app.post("/register", (req, res) => {
         });
 });
 
-app.post("/login",async (req, res) => {
+app.post("/login", async (req, res) => {
 
-    if(req.isAuthenticated()){
-        
+    if (req.isAuthenticated()) {
+
         res.send("You are already logged in")
-        
+
     }
 
     const user = await User.findOne({ username: req.body.username })
 
-    if (user){
+    if (user) {
 
-            req.login(user, (err) => {
+        req.login(user, (err) => {
 
             if (err) {
                 console.error(err);
@@ -148,26 +161,46 @@ app.get("/logout", (req, res) => {
 
 })
 
+app.post("/addTask", (req, res) => {
 
-app.post("/addTask", (req,res) => {
+        const minutesToReminder = parseInt(req.body.when);
+
+        if (!isNaN(minutesToReminder)) {
+            const now = new Date();
+            const reminderTime = new Date(now.getTime() + minutesToReminder * 60000); // Converte minutos em milissegundos
+
+            const task = {
+                description: req.body.description,
+                when: reminderTime
+            };
+ 
+            client.messages
+                .create({
+                    from: 'whatsapp:+14155238886',
+                    body: 'Bora irmão.',
+                    to: 'whatsapp:+557184313715'
+                })
+                .then(message => console.log(message.sid)
+                ).catch(err => console.log(err))
 
 
-        const task = {
-            description: req.body.description,
-            when: req.body.when
+            console.log("The task will be sent at " + reminderTime)
+
+            User.findByIdAndUpdate(req.session.userId, { $push: { tasks: task } })
+                .then((user) => {
+                    console.log(user.tasks);
+                    res.redirect("/");
+                })
+                .catch((err) => {
+                    console.error(err);
+                    res.status(500).send("Error adding task.");
+                });
+        } else {
+            res.status(400).send("Invalid input for reminder time.");
         }
-
-        User.findByIdAndUpdate(req.session.userId, {$push: {tasks: task}}) 
-            .then((user) => {
-                console.log(user.tasks)
-            })
-
-        res.send("You are not logged in")
-
-
     
+});
 
-})
 
 
 
