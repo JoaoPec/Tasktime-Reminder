@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const uri = "mongodb://127.0.0.1:27017/taskManager"
+const uri = `mongodb+srv://joaopecurcino:${process.env.PSWD}@taskdb.dzgerrv.mongodb.net/?retryWrites=true&w=majority`
 
 const dbConnect = () => {
     return mongoose.connect(uri, {
