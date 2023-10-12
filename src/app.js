@@ -33,7 +33,7 @@ app.use(passport.session())
 
 //connectDB
 
-dbConnect()
+await dbConnect()
 
 
 //get routes
