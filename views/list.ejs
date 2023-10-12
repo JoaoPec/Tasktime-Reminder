@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="stylelist.css">
+<title>TaskManager</title>
+<header>
+    <link rel="preconnect" href="http://fonts.googleapis.com">
+    <link rel="preconnect" href="http://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="style/stylelist.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</header>
+<h1>TaskManager</h1>
+    <body>
+        <a href="/addTask"><button style="margin-top: 10px;" type="submit">adicionar nova tarefa</button></a>
+        <div class="container">
+            <table>
+                <tr>
+                    <th id="horario">Horário</th>
+                    <th id="msgs">Mensagens agendadas</th>
+                </tr>
+                <% if (locals.user){ %>
+                <% locals.user.tasks.forEach((task) => { %>
+                <tr>
+                    <td><%= task.when.toLocaleTimeString() %></td>
+                    <td><%= task.description %></td>
+                </tr>
+                <% }) }%>
+            </table>
+        </div>
+
+    </body>

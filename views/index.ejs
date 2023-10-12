@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="style/style.css">
+<title>TaskManager</title>
+<header>
+    <link rel="preconnect" href="http://fonts.googleapis.com">
+    <link rel="preconnect" href="http://fonts.gstatic.com" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</header>
+<%if(locals.message){%>
+<h1><%=locals.message%></h1>
+<%}else{%>
+<h1>TaskManager</h1>
+<%}%>   
+<body>
+    <div class="container">
+        <form method="post" action="/register">
+            <label for="numero">Número Whatsapp:<input type="tel" id="input1" name="numero" pattern="[+]{1}[0-9]{11,14}"></label>
+            <br>
+            <br>
+            <label for="email">Email:<input type="email" id="input2" name="username"></label>
+            <br>
+            <br>
+            <label for="password">Senha:<input type="password" id="input3" name="password"></label>
+            <br>
+            <input type="submit" class="button" >
+            </button>
+        </form>
+    </div>
+
+</body>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="stylebot.css">
+<title>TaskManager</title>
+<header>
+    <link rel="preconnect" href="http://fonts.googleapis.com">
+    <link rel="preconnect" href="http://fonts.gstatic.com" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="style/stylebot.css">
+</header>
+<h1>TaskManager</h1>
+<a href="/logout">Logout</a>
+<body>
+    <div class="container">
+        <form method="post" action="/addTask">
+            <select id="select1" name="when">
+                <option value="">--Selecione o tempo do lembrete--</option>
+                <option value="10">10 minutos</option>
+                <option value="30">30 minutos</option>
+                <option value="60">1h</option>
+                <option value="120">2h</option>
+                <option value="600">10h</option>
+            </select>
+            <br>
+            <br>
+            <label for="description">Digite sua mensagem:</label>
+            <input type="text" name="description" maxlength="350" id="input3"> <!-- Use type="text" em vez de "textarea" para um campo de texto -->
+            <br>
+            <input type="submit" class="button">
+        </form>
+    </div>
+</body>

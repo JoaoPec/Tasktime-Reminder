@@ -6,12 +6,6 @@ import bodyParser from "body-parser"
 import mongoose from "mongoose"
 import session from "express-session"
 import dotenv from "dotenv"
-import initializeTwilioClient from "./twilioClient.js"
-import checkScheduledTasks from "./taskScheduler.js"
-
-//twilio
-
-const client = initializeTwilioClient()
 
 //dotenv
 
@@ -41,39 +35,59 @@ app.use(passport.session())
 
 dbConnect()
 
-setInterval(checkScheduledTasks, 60000);
 
 //get routes
 
 
 
-app.get("/",async (req, res) => {
-    if (req.isAuthenticated()) {
-       
-        const user = User.findById(req.session.userId)
 
-        if(user.tasks.length > 0){
+app.get("/",(req, res) => {
 
-                    }
-
-    }
+    res.render("index")
 
 })
 
 
+app.get("/list",async (req,res) => {
+
+    if (req.isAuthenticated){
+
+        const user = await User.findById(req.session.userId)
+
+        res.render("list", {user})
+    }else{
+        res.redirect("/")
+    }
+
+})
+
+app.get("/addTask", (req,res) => {
+    if (req.isAuthenticated){
+        res.render("bot")
+    }
+    else{
+        res.render("index")
+    }
+})
 
 
 //register,login and logout routes
 
 
 app.post("/register", (req, res) => {
-
     User.findOne({ username: req.body.username })
         .then((user) => {
             if (user) {
-                res.send("User already exists");
+                req.login(user, (err) => {
+                    if (err) {
+                        console.error(err);
+                        res.status(500).send("Error logging in after registration");
+                    }
+                    req.session.userId = user._id.toString();
+                    console.log(req.session.userId);
+                    res.redirect("/list"); 
+                });
             } else {
-
                 const newUser = new User({
                     _id: new mongoose.Types.ObjectId(),
                     name: req.body.name,
@@ -83,25 +97,19 @@ app.post("/register", (req, res) => {
 
                 User.register(newUser, req.body.password)
                     .then((user) => {
-
                         req.login(user, (err) => {
                             if (err) {
                                 console.error(err);
                                 res.status(500).send("Error logging in after registration");
                             }
-
                             req.session.userId = user._id.toString();
-
-                            console.log(req.session.userId)
-
-                            res.redirect("/")
-
+                            console.log(req.session.userId);
+                            res.redirect("/list");
                         })
                     }).catch((err) => {
                         console.error(err);
-                        res.status(500).send("Error registering new user please try again.");
-                    })
-
+                        res.status(500).send("Error registering new user, please try again.");
+                    });
             }
         })
         .catch((err) => {
@@ -110,39 +118,6 @@ app.post("/register", (req, res) => {
         });
 });
 
-app.post("/login", async (req, res) => {
-
-    if (req.isAuthenticated()) {
-
-        res.send("You are already logged in")
-
-    }
-
-    const user = await User.findOne({ username: req.body.username })
-
-    if (user) {
-
-        req.login(user, (err) => {
-
-            if (err) {
-                console.error(err);
-                res.status(500).send("Error logging in");
-            }
-
-            req.session.userId = user._id.toString();
-
-            console.log(req.session.userId)
-
-            console.log("User logged in")
-
-            res.redirect("/")
-
-        })
-
-    } else {
-        res.send("User does not exist, please register")
-    }
-})
 
 app.get("/logout", (req, res) => {
 
@@ -174,22 +149,12 @@ app.post("/addTask", (req, res) => {
                 when: reminderTime
             };
  
-            client.messages
-                .create({
-                    from: 'whatsapp:+14155238886',
-                    body: 'Bora irmão.',
-                    to: 'whatsapp:+557184313715'
-                })
-                .then(message => console.log(message.sid)
-                ).catch(err => console.log(err))
-
-
             console.log("The task will be sent at " + reminderTime)
 
             User.findByIdAndUpdate(req.session.userId, { $push: { tasks: task } })
                 .then((user) => {
                     console.log(user.tasks);
-                    res.redirect("/");
+                    res.redirect("/list");
                 })
                 .catch((err) => {
                     console.error(err);
@@ -200,10 +165,6 @@ app.post("/addTask", (req, res) => {
         }
     
 });
-
-
-
-
 
 
 //listen
