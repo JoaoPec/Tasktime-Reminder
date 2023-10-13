@@ -10,11 +10,16 @@
 <h1><%=locals.message%></h1>
 <%}else{%>
 <h1>TaskManager</h1>
+<a href="/logout">Logout</a>
 <%}%>   
 <body>
     <div class="container">
         <form method="post" action="/register">
-            <label for="numero">Número Whatsapp:<input type="tel" id="input1" name="numero" pattern="[+]{1}[0-9]{11,14}"></label>
+            
+            <label for="name">Nome:<input type="text" id="input1" name="name"></label>
+            <br>
+            <br>
+            <label for="numero">Número Whatsapp (ex: +557184313715):<input type="tel" id="input1" name="phoneNum" pattern="[+]{1}[0-9]{11,14}"></label>
             <br>
             <br>
             <label for="email">Email:<input type="email" id="input2" name="username"></label>
