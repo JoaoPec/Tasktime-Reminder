@@ -166,6 +166,20 @@ app.post("/addTask", (req, res) => {
     
 });
 
+app.post("/deleteTask", async (req, res) => {
+    try {
+        const taskId = req.body.taskId;
+        console.log(taskId);
+        const result = await User.findByIdAndUpdate(req.session.userId, { $pull: { tasks: { _id: taskId } } });
+        console.log("Task deleted");
+        res.redirect("/list");
+    } catch (error) {
+        console.error("Erro ao excluir tarefa:", error);
+        res.status(500).send("Erro ao excluir tarefa");
+    }
+});
+
+
 
 //listen
 
