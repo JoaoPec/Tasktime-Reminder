@@ -142,7 +142,7 @@ app.post("/addTask", (req, res) => {
 
         if (!isNaN(minutesToReminder)) {
             const now = new Date();
-            const reminderTime = new Date(now.getTime() + minutesToReminder * 60000); // Converte minutos em milissegundos
+            const reminderTime = new Date(now.getTime() + minutesToReminder * 60000); 
 
             const task = {
                 description: req.body.description,
