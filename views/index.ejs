@@ -1,34 +1,56 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="style/style.css">
-<title>TaskManager</title>
-<header>
-    <link rel="preconnect" href="http://fonts.googleapis.com">
-    <link rel="preconnect" href="http://fonts.gstatic.com" crossorigin>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-</header>
-<%if(locals.message){%>
-<h1><%=locals.message%></h1>
-<%}else{%>
-<h1>TaskManager</h1>
-<%}%>   
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/style.css">
+    <title>TaskManager</title>
+</head>
+
 <body>
+
+    <div class="title">
+        <h1>TaskManager</h1>
+    </div>
+
     <div class="container">
+        <h1>Sign in</h1>
+
         <form method="post" action="/register">
-            
-            <label for="name">Nome:<input type="text" id="input1" name="name"></label>
-            <br>
-            <br>
-            <label for="numero">Número Whatsapp (ex: +557184313715):<input type="tel" id="input1" name="phoneNum" pattern="[+]{1}[0-9]{12,13}"></label>
-            <br>
-            <br>
-            <label for="email">Email:<input type="email" id="input2" name="username"></label>
-            <br>
-            <br>
-            <label for="password">Senha:<input type="password" id="input3" name="password"></label>
-            <br>
-            <input type="submit" class="button" >
-            </button>
+
+            <label for="name">Nome</label>
+            <input type="text" id="input1" name="name">
+
+            <label for="numero">Número de Telefone</label>
+            <input type="tel" id="input2" name="phoneNum" pattern="{1}[0-8]{12}" oninput="formatPhoneNumber()">
+
+            <label for="email">Email</label>
+            <input type="email" id="input3" name="username">
+
+            <label for="password">Senha</label>
+            <input type="password" id="input4" name="password">
+
+            <button type="submit">Sing in</button>
         </form>
     </div>
 
+    <script>
+
+        function formatPhoneNumber() {
+            let phoneNumberInput = document.getElementById('input2');
+            let phoneNumber = phoneNumberInput.value;
+
+            let numericPhoneNumber = phoneNumber.replace(/\D/g, '');
+
+            let formattedPhoneNumber = numericPhoneNumber.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, '$1 $2 $3 $4');
+
+            phoneNumberInput.value = formattedPhoneNumber;
+        }
+
+    </script>
+
 </body>
+
+</html>

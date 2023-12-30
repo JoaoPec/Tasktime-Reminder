@@ -1,53 +1,104 @@
-*{
-    box-sizing: border-box;
-    font-family: 'arial'
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    text-decoration: none;
-    scroll-behavior: smooth;
-}
-h1{
-    padding-top: 20px;
- font-family: 'jokerman';
- letter-spacing: 2px;
- text-shadow: 2px 2px white;
-}
+html {
+    background-color: #2e3440;
 
-:root{
-    text-align: center;
-}
-
-
-body{
-    width: 100%;
-    background-image: linear-gradient(to right,blue,gray,black);
-    align-content: center;
-}
-
-
-.container{
-    margin-top: 20px;
-    align-items: center;
     display: flex;
+
+    align-items: center;
+
     justify-content: center;
+
+    font-family: 'Roboto', sans-serif;
+
+}
+
+.title {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    color: grey;
+
+}
+
+.title>h1 {
+
+    font-size: 3.5rem;
+
+    margin-bottom: 100px;
+
 }
 
 
-form{
-    padding: 10px;
-    width: 400px;
-    height: 400px;
-    background-color: white;
-    align-items: center;
+
+.container {
+
+    height: 50vh;
+
+    width: 50vh;
+
+    background-color: #3b4252;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+}
+
+.container h1{
+    
+    padding: 20px;
+
+}
+
+form {
+
     display: flex;
     flex-direction: column;
-    text-align: center;
+    align-items: center;
     justify-content: center;
-    border-radius: 25px;
+
 }
 
-label{}
 
+form>input {
 
-button{}
+    border-radius: 12px;
+
+    border-style: none;
+
+    padding: 5px;
+
+    margin: 10px;
+
+}
+
+button{
+    
+        border-radius: 12px;
+    
+        border-style: none;
+    
+        padding: 5px;
+    
+        margin: 10px;
+    
+        background-color: #2e3440;
+    
+        color: white;
+    
+        font-size: 1.2rem;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
+}
+
+button:hover{
+    background-color: #4c566a;
+}

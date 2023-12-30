@@ -9,11 +9,13 @@
 </header>
 <h1>TaskManager</h1>
 <a href="/logout">Logout</a>
+
 <body>
     <div class="container">
         <form method="post" action="/addTask">
             <select id="select1" name="when">
                 <option value="">--Selecione o tempo do lembrete--</option>
+                <option value="1">1 minuto</option>
                 <option value="5">5 minutos</option>
                 <option value="10">10 minutos</option>
                 <option value="30">30 minutos</option>
@@ -21,12 +23,9 @@
                 <option value="120">2h</option>
                 <option value="600">10h</option>
             </select>
-            <br>
-            <br>
             <label for="description">Digite sua mensagem:</label>
-            <input type="text" name="description" maxlength="350" id="input3"> <!-- Use type="text" em vez de "textarea" para um campo de texto -->
-            <br>
-            <input type="submit" class="button">
+            <input type="text" name="description" maxlength="350" id="input3">
+            <button type="submit">Enviar</button>
         </form>
     </div>
 </body>

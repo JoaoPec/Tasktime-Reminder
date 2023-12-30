@@ -9,6 +9,7 @@
 </header>
 <h1>TaskManager</h1>
 <a href="/logout">Logout</a>
+
 <body>
     <a href="/addTask"><button style="margin-top: 10px;" type="submit">Adicionar Nova Tarefa</button></a>
     <div class="container">
@@ -19,21 +20,24 @@
                 <th>Ações</th>
             </tr>
             <% if (locals.user){ %>
-            <% if (locals.user.tasks.length > 0) {%>
-            <% locals.user.tasks.forEach((task, index) => { %>
-            <tr>
-                <td><%= new Date(task.when - 3 * 60 * 60 * 1000).toLocaleTimeString() %></td>
-                <td><%= task.description %></td>
-                <td>
-                    <form action="/deleteTask" method="post">
-                        <input type="hidden" name="taskId" value="<%= task._id %>">
-                        <button type="submit">Excluir</button>
-                    </form>
-                </td>
-            </tr>
-            <%})%>
-            <% } }%>
+                <% if (locals.user.tasks.length> 0) {%>
+                    <% locals.user.tasks.forEach((task, index)=> { %>
+                        <tr>
+                            <td>
+                                <%= new Date(task.when).toLocaleTimeString() %>
+                            </td>
+                            <td>
+                                <%= task.description %>
+                            </td>
+                            <td>
+                                <form action="/deleteTask" method="post">
+                                    <input type="hidden" name="taskId" value="<%= task._id %>">
+                                    <button class="submit-button" type="submit">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <%})%>
+                            <% } }%>
         </table>
     </div>
 </body>
-
